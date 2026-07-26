@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PMB Universitas Majalengka - Portal Resmi Penerimaan Mahasiswa Baru</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --unma-navy: #0A4D92;
+            --unma-gold: #FFC107;
+            --unma-dark: #1e293b;
+            --unma-light: #f8fafc;
+            --font-family: 'Outfit', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: #f1f5f9;
+            color: var(--unma-dark);
+            line-height: 1.6;
+        }
+
+        /* Top Alert Bar */
+        .top-alert {
+            background-color: var(--unma-gold);
+            color: #000;
+            text-align: center;
+            padding: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        /* Navigation Header */
+        header {
+            background-color: #ffffff;
+            border-bottom: 3px solid var(--unma-navy);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .brand-logo-circle {
+            width: 45px;
+            height: 45px;
+            background-color: var(--unma-navy);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border: 2px solid var(--unma-gold);
+            font-size: 1.25rem;
+            box-shadow: 0 4px 6px rgba(10, 77, 146, 0.2);
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-text h1 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--unma-navy);
+            line-height: 1;
+            margin: 0;
+        }
+
+        .brand-text span {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #64748b;
+            letter-spacing: 0.5px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--unma-dark);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--unma-navy);
+        }
+
+        .btn-register {
+            background-color: var(--unma-navy);
+            color: white;
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            transition: all 0.3s;
+            border: 1px solid var(--unma-navy);
+        }
+
+        .btn-register:hover {
+            background-color: white;
+            color: var(--unma-navy);
+            box-shadow: 0 4px 10px rgba(10, 77, 146, 0.15);
+        }
+
+        /* Hero Banner Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(10, 77, 146, 0.95), rgba(15, 23, 42, 0.95)), 
+                        url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1200&auto=format&fit=crop') no-repeat center center/cover;
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .hero-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .hero h2 span {
+            color: var(--unma-gold);
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            margin-bottom: 2rem;
+            color: #cbd5e1;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn-hero {
+            padding: 0.85rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .btn-hero.primary {
+            background-color: var(--unma-gold);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+        }
+
+        .btn-hero.primary:hover {
+            background-color: white;
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-hero.secondary {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+
+        .btn-hero.secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Hero 3D Interactive Stage Card */
+        .hero-3d-stage-card {
+            position: relative;
+            margin: 2.5rem auto 0 auto;
+            width: 100%;
+            max-width: 480px;
+            height: 320px;
+            background: linear-gradient(135deg, rgba(18, 34, 64, 0.75), rgba(10, 77, 146, 0.45));
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            border: 1.5px solid rgba(255, 193, 7, 0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .hero-3d-stage-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: var(--unma-gold);
+            box-shadow: 0 20px 45px rgba(10, 77, 146, 0.5);
+        }
+
+        .hero-3d-canvas {
+            width: 100%;
+            height: 250px;
+            display: block;
+        }
+
+        .hero-3d-expression-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(4px);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--unma-gold);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            z-index: 10;
+        }
+
+        .hero-3d-expression-badge img {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .hero-3d-expression-badge span {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--unma-navy);
+        }
+
+        .hero-3d-stage-hint {
+            position: absolute;
+            bottom: 12px;
+            font-size: 0.78rem;
+            color: #cbd5e1;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        /* Features Section */
+        .info-cards {
+            max-width: 1200px;
+            margin: -3rem auto 3rem auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+            border-top: 4px solid var(--unma-navy);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card:nth-child(2) {
+            border-top-color: var(--unma-gold);
+        }
+
+        .card-icon {
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .card:nth-child(1) .card-icon { color: var(--unma-navy); }
+        .card:nth-child(2) .card-icon { color: var(--unma-gold); }
+        .card:nth-child(3) .card-icon { color: #10b981; }
+
+        .card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .card p {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        /* Timeline Section */
+        .timeline-section {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            position: relative;
+            color: var(--unma-navy);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background-color: var(--unma-gold);
+            border-radius: 2px;
+        }
+
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .timeline-step {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .step-num {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--unma-navy);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            margin: 0 auto 1rem auto;
+            border: 2px solid var(--unma-gold);
+        }
+
+        .timeline-step h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-step p {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #0f172a;
+            color: #94a3b8;
+            padding: 4rem 2rem 2rem 2rem;
+            border-top: 5px solid var(--unma-navy);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-col h5 {
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+        }
+
+        .footer-col p {
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-col ul a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .footer-col ul a:hover {
+            color: var(--unma-gold);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            font-size: 0.8rem;
+        }
+
+        /* Admin link helper */
+        .admin-pill {
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            background-color: #0f172a;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+            z-index: 99999;
+        }
+
+        .admin-pill:hover {
+            background-color: var(--unma-navy);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top alert info -->
+    <div class="top-alert">
+        <i class="fa-solid fa-bullhorn"></i> PENDAFTARAN MAHASISWA BARU TA 2026/2027 GELOMBANG II TELAH DIBUKA! DAFTAR SEBELUM 30 JUNI!
+    </div>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="brand">
+                <div class="brand-logo-circle">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>PMB UNMA</h1>
+                    <span>Universitas Majalengka</span>
+                </div>
+            </a>
+            
+            <nav>
+                <ul>
+                    <li><a href="#">Beranda</a></li>
+                    <li><a href="#">Fakultas &amp; Jurusan</a></li>
+                    <li><a href="#">Jalur Masuk</a></li>
+                    <li><a href="#">Biaya Semester</a></li>
+                    <li><a href="#">Panduan</a></li>
+                    <!-- Tombol Panel Panitia dihapus dari navbar publik -->
+                    <!-- Akses admin melalui: http://localhost:5000/ (akan redirect ke halaman login) -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero">
+        <div class="hero-container">
+            <h2>Penerimaan Mahasiswa Baru<br><span>Universitas Majalengka</span></h2>
+            <p>Mulai perjalanan akademik Anda di kampus terbaik se-Kabupaten Majalengka. Pilihan tepat untuk masa depan gemilang, mandiri, dan berbudaya.</p>
+            <div class="cta-group">
+                <a href="#" class="btn-hero primary" onclick="alert('Ini adalah simulasi link pendaftaran PMB UNMA')"><i class="fa-solid fa-pen-to-square"></i> Daftar Sekarang</a>
+                <a href="#" class="btn-hero secondary" onclick="alert('Buku Panduan PDF dapat diunduh di widget Siberma di pojok kanan bawah!')"><i class="fa-solid fa-download"></i> Unduh Brosur PMB</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Cards Section -->
+    <section class="info-cards">
+        <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-award"></i></div>
+            <h3>Jalur Prestasi</h3>
+            <p>Masuk UNMA bebas tes tulis hanya berdasarkan nilai Rapor semester 1-5 atau sertifikat juara olahraga/seni minimal tingkat Kabupaten.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+            <h3>Pilihan Beasiswa</h3>
+            <p>Tersedia Program KIP-Kuliah (Beasiswa Penuh), Beasiswa Yayasan Pembina UNMA, Beasiswa Pemkab Majalengka, dan Beasiswa UKT.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-flask-vial"></i></div>
+            <h3>7 Pilihan Fakultas</h3>
+            <p>Kuliah di Fakultas Teknik, Hukum, Ekonomi & Bisnis, Ilmu Sosial & Politik, Agama Islam, Pertanian, dan Keguruan dengan Fasilitas Lengkap.</p>
+        </div>
+    </section>
+
+    <!-- Registration Flow/Timeline -->
+    <section class="timeline-section">
+        <h3 class="section-title">Alur Pendaftaran Online</h3>
+        <div class="timeline">
+            <div class="timeline-step">
+                <div class="step-num">1</div>
+                <h4>Buat Akun</h4>
+                <p>Register akun pendaftar di portal PMB UNMA untuk mendapat token.</p>
+            </div>
+            <div class="timeline-step">
+                <div class="step-num">2</div>
+                <h4>Uang Formulir</h4>
+                <p>Melakukan transfer biaya pendaftaran formulir sebesar Rp 250.000.</p>
+            </div>
+            <div class="timeline-step">
+                <div class="step-num">3</div>
+                <h4>Lengkapi Data</h4>
+                <p>Isi data profil lengkap dan unggah ijazah/SKL serta dokumen wajib.</p>
+            </div>
+            <div class="timeline-step">
+                <div class="step-num">4</div>
+                <h4>Tes Seleksi</h4>
+                <p>Ikuti ujian saringan online atau verifikasi berkas khusus jalur prestasi.</p>
+            </div>
+            <div class="timeline-step">
+                <div class="step-num">5</div>
+                <h4>Registrasi Ulang</h4>
+                <p>Daftar ulang, pembayaran SPP awal, dan resmi menjadi mahasiswa UNMA.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h5>Tentang Universitas</h5>
+                <p>Universitas Majalengka (UNMA) berkomitmen menciptakan lulusan yang unggul secara intelektual, mandiri dalam berkarya, dan menjunjung nilai religius.</p>
+                <p><i class="fa-solid fa-location-dot"></i> Jl. KH. Abdul Halim No. 103, Majalengka, Jawa Barat</p>
+            </div>
+            <div class="footer-col">
+                <h5>Fakultas Utama</h5>
+                <ul>
+                    <li><a href="#">Fakultas Teknik</a></li>
+                    <li><a href="#">Fakultas Keguruan & Ilmu Pendidikan</a></li>
+                    <li><a href="#">Fakultas Ekonomi & Bisnis</a></li>
+                    <li><a href="#">Fakultas Hukum</a></li>
+                    <li><a href="#">Fakultas Agama Islam</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Kontak & Bantuan</h5>
+                <p><i class="fa-solid fa-phone"></i> (0233) 281496</p>
+                <p><i class="fa-brands fa-whatsapp"></i> 0811-2233-4455 (Hotline PMB)</p>
+                <p><i class="fa-solid fa-envelope"></i> pmb@unma.ac.id</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Universitas Majalengka. Semua Hak Dilindungi. Proyek Simulasi Chatbot Siberma.</p>
+        </div>
+    </footer>
+
+    <!-- Admin Helper Link Bubble -->
+    <a href="index.html" class="admin-pill" title="Ke Dasbor Manajemen Panitia">
+        <i class="fa-solid fa-lock"></i>
+        <span>Ke Panel Panitia</span>
+    </a>
+
+    <!-- Three.js 3D Engine for Siberma 3D Mascot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <!-- Embed Siberma Chatbot Widget -->
+    <script src="js/siberma-widget.js"></script>
+</body>
+</html>

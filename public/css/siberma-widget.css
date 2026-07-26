@@ -1,0 +1,1104 @@
+/* Stylesheet for Siberma Embeddable Chat Widget */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+/* Sandboxed Widget Container */
+#siberma-widget {
+    --sw-blue: #0A4D92;
+    --sw-gold: #FFC107;
+    --sw-dark: #111827;
+    --sw-light: #ffffff;
+    --sw-text: #374151;
+    --sw-text-muted: #6b7280;
+    --sw-bg: #f9fafb;
+    --sw-border: rgba(0, 0, 0, 0.08);
+    --sw-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    --sw-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    font-family: 'Outfit', sans-serif;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    pointer-events: none; /* Penting: agar container invisible tidak menutupi click ke maskot di bawahnya */
+}
+
+/* Floating Launcher Button */
+.siberma-launcher {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--sw-blue), #1e3a8a);
+    color: white;
+    box-shadow: 0 4px 20px rgba(10, 77, 146, 0.5);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    transition: var(--sw-transition);
+    position: relative;
+}
+
+.siberma-launcher:hover {
+    transform: scale(1.08) rotate(5deg);
+    box-shadow: 0 6px 25px rgba(10, 77, 146, 0.7);
+}
+
+.siberma-launcher::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid var(--sw-blue);
+    opacity: 0;
+    animation: launcherPulse 2s infinite;
+}
+
+@keyframes launcherPulse {
+    0% { transform: scale(1); opacity: 0.5; }
+    100% { transform: scale(1.4); opacity: 0; }
+}
+
+.siberma-launcher i {
+    transition: var(--sw-transition);
+}
+
+.siberma-launcher.active i {
+    transform: rotate(90deg);
+}
+
+/* Floating Chat Panel Container */
+.siberma-panel {
+    /* Desktop: ukuran nyaman dibaca */
+    width: 420px;
+    height: 600px;
+    background-color: var(--sw-light);
+    border-radius: 20px;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.18), 0 8px 16px rgba(0,0,0,0.08);
+    border: 1px solid var(--sw-border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: scale(0.85) translateY(30px);
+    opacity: 0;
+    pointer-events: none;
+    transform-origin: bottom right;
+    transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.34, 1.3, 0.64, 1);
+    max-height: calc(100vh - 120px);
+}
+
+.siberma-panel.active {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Panel Header */
+.siberma-header {
+    background: linear-gradient(135deg, var(--sw-blue), #122240);
+    color: white;
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--sw-gold);
+}
+
+.siberma-header-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.siberma-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid var(--sw-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    color: var(--sw-gold);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.siberma-header-text h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.25px;
+}
+
+.siberma-status {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.7rem;
+    color: #93c5fd;
+    margin-top: 0.1rem;
+}
+
+.siberma-status-dot {
+    width: 6px;
+    height: 6px;
+    background: #10b981;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 6px #10b981;
+}
+
+.siberma-close-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: var(--sw-transition);
+}
+
+.siberma-close-btn:hover {
+    color: white;
+    transform: scale(1.1);
+}
+
+/* Panel Sub-Navigation (Tabs) */
+.siberma-tabs {
+    display: flex;
+    background: #f3f4f6;
+    border-bottom: 1px solid var(--sw-border);
+}
+
+.siberma-tab-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 0.65rem 0.5rem;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--sw-text-muted);
+    cursor: pointer;
+    text-align: center;
+    transition: var(--sw-transition);
+    border-bottom: 2px solid transparent;
+}
+
+.siberma-tab-btn.active {
+    color: var(--sw-blue);
+    border-bottom-color: var(--sw-blue);
+    background: white;
+}
+
+/* Panel Body Switcher */
+.siberma-body-tab {
+    display: none;
+    flex: 1;
+    flex-direction: column;
+    background-color: var(--sw-bg);
+    overflow: hidden;
+}
+
+.siberma-body-tab.active {
+    display: flex;
+}
+
+/* Chat Tab Scrollable Area */
+.siberma-chat-messages {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.sw-msg {
+    display: flex;
+    width: 100%;
+}
+
+.sw-msg.sent {
+    justify-content: flex-end;
+}
+
+.sw-msg.received {
+    justify-content: flex-start;
+}
+
+.sw-bubble {
+    max-width: 80%;
+    padding: 0.65rem 0.85rem;
+    border-radius: 16px;
+    font-size: 0.825rem;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+.sw-msg.sent .sw-bubble {
+    background-color: var(--sw-blue);
+    color: white;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 4px 10px rgba(10, 77, 146, 0.15);
+}
+
+.sw-msg.received .sw-bubble {
+    background-color: white;
+    color: var(--sw-text);
+    border-bottom-left-radius: 4px;
+    border: 1px solid var(--sw-border);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.sw-msg-time {
+    font-size: 0.65rem;
+    color: var(--sw-text-muted);
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.sw-msg.sent .sw-msg-time {
+    text-align: right;
+}
+
+/* Chat Quick Actions (FAQ Chips) */
+.siberma-quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #f9fafb;
+    border-top: 1px solid var(--sw-border);
+}
+
+.siberma-chip {
+    background: white;
+    border: 1px solid var(--sw-border);
+    color: var(--sw-blue);
+    padding: 0.35rem 0.65rem;
+    border-radius: 9999px;
+    font-size: 0.725rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--sw-transition);
+}
+
+.siberma-chip:hover {
+    background: var(--sw-blue);
+    color: white;
+    border-color: var(--sw-blue);
+    transform: translateY(-1px);
+}
+
+/* Chat Input Footer */
+.siberma-input-footer {
+    padding: 0.75rem 1rem;
+    background: white;
+    border-top: 1px solid var(--sw-border);
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.siberma-input-footer input {
+    flex: 1;
+    border: 1px solid var(--sw-border);
+    border-radius: 12px;
+    padding: 0.55rem 0.85rem;
+    outline: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    color: var(--sw-text);
+    background-color: #f9fafb;
+    transition: var(--sw-transition);
+}
+
+.siberma-input-footer input:focus {
+    border-color: var(--sw-blue);
+    background-color: white;
+}
+
+.siberma-send-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--sw-blue);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    transition: var(--sw-transition);
+}
+
+.siberma-send-btn:hover {
+    background: #1e3a8a;
+    transform: scale(1.05);
+}
+
+/* Progress Tracker (Checklist) Tab */
+.siberma-tracker-container {
+    padding: 1.25rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.siberma-tracker-header {
+    text-align: center;
+    margin-bottom: 1.25rem;
+}
+
+.siberma-tracker-header h5 {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--sw-text);
+}
+
+.siberma-tracker-header p {
+    margin: 0.25rem 0 0 0;
+    font-size: 0.7rem;
+    color: var(--sw-text-muted);
+}
+
+.siberma-progress-bar-container {
+    background: #e5e7eb;
+    height: 8px;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.siberma-progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--sw-blue), var(--sw-gold));
+    width: 0%;
+    transition: width 0.4s ease-out;
+}
+
+.siberma-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.siberma-check-item {
+    display: flex;
+    background: white;
+    border: 1px solid var(--sw-border);
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    transition: var(--sw-transition);
+}
+
+.siberma-check-item:hover {
+    border-color: rgba(10, 77, 146, 0.3);
+    transform: translateX(3px);
+}
+
+.siberma-check-item.completed {
+    background: rgba(16, 185, 129, 0.03);
+    border-color: rgba(16, 185, 129, 0.2);
+}
+
+.siberma-checkbox {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 2px solid var(--sw-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    color: white;
+    transition: var(--sw-transition);
+}
+
+.siberma-check-item.completed .siberma-checkbox {
+    background-color: #10b981;
+    border-color: #10b981;
+}
+
+.siberma-check-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.siberma-check-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--sw-text);
+    transition: var(--sw-transition);
+}
+
+.siberma-check-item.completed .siberma-check-title {
+    text-decoration: line-through;
+    color: var(--sw-text-muted);
+}
+
+.siberma-check-desc {
+    font-size: 0.68rem;
+    color: var(--sw-text-muted);
+}
+
+/* Download Center Tab */
+.siberma-downloads {
+    padding: 1.25rem;
+    overflow-y: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.siberma-dl-card {
+    background: white;
+    border: 1px solid var(--sw-border);
+    border-radius: 12px;
+    padding: 0.85rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: var(--sw-transition);
+}
+
+.siberma-dl-card:hover {
+    border-color: rgba(10, 77, 146, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+
+.siberma-dl-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.siberma-dl-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.siberma-dl-details h6 {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--sw-text);
+}
+
+.siberma-dl-details p {
+    margin: 0;
+    font-size: 0.65rem;
+    color: var(--sw-text-muted);
+}
+
+.siberma-dl-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    border: 1px solid var(--sw-border);
+    background: white;
+    color: var(--sw-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--sw-transition);
+}
+
+.siberma-dl-btn:hover {
+    background: var(--sw-blue);
+    color: white;
+    border-color: var(--sw-blue);
+}
+
+/* ---------------------------------------------------
+ * ENHANCED TYPING INDICATOR WITH ANIMATED MASCOT & DOTS
+ * --------------------------------------------------- */
+.sw-typing-row {
+    animation: swTypingFadeIn 0.3s ease-out;
+}
+
+@keyframes swTypingFadeIn {
+    0% { opacity: 0; transform: translateY(6px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.sw-typing-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sw-typing-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: contain;
+    border: 1.5px solid var(--sw-gold);
+    animation: mascotFloatBounce 2.5s ease-in-out infinite;
+}
+
+.sw-typing-bubble {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(10, 77, 146, 0.15) !important;
+    box-shadow: 0 4px 15px rgba(10, 77, 146, 0.08) !important;
+    border-radius: 16px 16px 16px 4px !important;
+}
+
+.sw-typing-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--sw-blue);
+    letter-spacing: 0.2px;
+}
+
+.sw-typing-dots {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.sw-typing-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--sw-blue);
+    animation: swTypingWave 1.4s infinite ease-in-out both;
+}
+
+.sw-typing-dot:nth-child(1) {
+    background: var(--sw-blue);
+    animation-delay: -0.32s;
+}
+
+.sw-typing-dot:nth-child(2) {
+    background: var(--sw-gold);
+    animation-delay: -0.16s;
+}
+
+.sw-typing-dot:nth-child(3) {
+    background: var(--sw-blue);
+    animation-delay: 0s;
+}
+
+@keyframes swTypingWave {
+    0%, 80%, 100% {
+        transform: translateY(0) scale(0.8);
+        opacity: 0.4;
+    }
+    40% {
+        transform: translateY(-6px) scale(1.3);
+        opacity: 1;
+        box-shadow: 0 2px 6px rgba(10, 77, 146, 0.4);
+    }
+}
+
+/* ---------------------------------------------------
+ * NEW PROFESSIONAL FEATURES STYLING
+ * --------------------------------------------------- */
+
+/* 1. Proactive Floating Toast Greeting */
+/* position: fixed — di-anchor ke viewport, tidak terpengaruh oleh panel chat */
+.sw-proactive-toast {
+    position: fixed;
+    /* Diposisikan lebih tinggi (260px) agar tidak tumpang tindih dan menutupi ikon maskot */
+    bottom: 260px;
+    right: 30px;
+    width: 260px;
+    background: #ffffff;
+    border: 1px solid rgba(10, 77, 146, 0.15);
+    border-radius: 16px;
+    padding: 11px 14px;
+    box-shadow: 0 10px 30px -5px rgba(10, 77, 146, 0.22),
+                0 4px 10px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    pointer-events: auto; /* Mengembalikan interaktivitas click yang dinonaktifkan di parent container */
+    /* z-index di bawah panel chat tapi di atas halaman */
+    z-index: 99997;
+    animation: toastPopIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    cursor: pointer;
+    /* Transisi untuk fade-out halus saat ditutup */
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+@keyframes toastPopIn {
+    0% { opacity: 0; transform: translateY(15px) scale(0.9); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.sw-toast-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--sw-blue), #1e3a8a);
+    color: var(--sw-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.sw-toast-content {
+    flex: 1;
+}
+
+.sw-toast-content h5 {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--sw-blue);
+}
+
+.sw-toast-content p {
+    margin: 2px 0 0 0;
+    font-size: 0.68rem;
+    color: var(--sw-text);
+    line-height: 1.3;
+}
+
+.sw-toast-close {
+    background: transparent;
+    border: none;
+    color: var(--sw-text-muted);
+    font-size: 0.8rem;
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 50%;
+    transition: var(--sw-transition);
+}
+
+.sw-toast-close:hover {
+    color: #ef4444;
+    background: #fee2e2;
+}
+
+/* 2. Quick Action Chips */
+.sw-quick-chips {
+    display: flex;
+    gap: 6px;
+    padding: 8px 12px 4px 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+    background: #f8fafc;
+}
+
+.sw-quick-chips::-webkit-scrollbar {
+    display: none;
+}
+
+.sw-chip {
+    white-space: nowrap;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--sw-blue);
+    background: rgba(10, 77, 146, 0.06);
+    border: 1px solid rgba(10, 77, 146, 0.15);
+    padding: 4px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: var(--sw-transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.sw-chip:hover {
+    background: var(--sw-blue);
+    color: #ffffff;
+    border-color: var(--sw-blue);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(10, 77, 146, 0.15);
+}
+
+/* 3. Text-to-Speech (TTS) Speaker Button on Messages */
+.sw-bubble-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.sw-tts-btn {
+    background: transparent;
+    border: none;
+    color: var(--sw-text-muted);
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: var(--sw-transition);
+}
+
+.sw-tts-btn:hover {
+    color: var(--sw-blue);
+    background: rgba(10, 77, 146, 0.08);
+}
+
+.sw-tts-btn.speaking {
+    color: #10b981;
+    animation: ttsPulse 1s infinite alternate;
+}
+
+@keyframes ttsPulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.2); }
+}
+
+/* 4. Voice Input (Microphone) Button */
+.sw-voice-btn {
+    background: transparent;
+    border: none;
+    color: var(--sw-text-muted);
+    font-size: 0.95rem;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 50%;
+    transition: var(--sw-transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sw-voice-btn:hover {
+    color: var(--sw-blue);
+    background: rgba(10, 77, 146, 0.08);
+}
+
+.sw-voice-btn.recording {
+    color: #ef4444;
+    background: #fee2e2;
+    animation: micPulse 1.2s infinite;
+}
+
+@keyframes micPulse {
+    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+    70% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+/* 5. Animated Mascot Avatar Custom Styling */
+.sw-mascot-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 50%;
+    display: block;
+    /* Fallback: jika gambar gagal load, background terlihat */
+    background: linear-gradient(135deg, var(--sw-blue, #0A4D92), #1e3a8a);
+}
+
+/* ==========================================================================
+   5. BOTTOM FLOATING CORNER 3D MASCOT VIRTUAL ASSISTANT (PREMIUM)
+   ========================================================================== */
+
+/* ---- Keyframe Animations ---- */
+@keyframes swMascotFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+}
+@keyframes swMascotGlowPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(10, 77, 146, 0.5), 0 0 20px rgba(10, 77, 146, 0.3); }
+    50% { box-shadow: 0 0 0 10px rgba(10, 77, 146, 0.0), 0 0 35px rgba(10, 77, 146, 0.6); }
+}
+@keyframes swBubbleEntrance {
+    0% { opacity: 0; transform: scale(0.7) translateY(10px); }
+    80% { transform: scale(1.05) translateY(-2px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes swBubblePop {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+}
+@keyframes swRingPulse {
+    0% { transform: scale(1); opacity: 0.7; }
+    100% { transform: scale(1.45); opacity: 0; }
+}
+@keyframes swSparkle {
+    0% { transform: scale(0) rotate(0deg); opacity: 0; }
+    50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
+    100% { transform: scale(0) rotate(360deg); opacity: 0; }
+}
+
+/* ---- Main Mascot Launcher Container ---- */
+.sw-mascot-launcher {
+    position: fixed;
+    right: 28px;
+    bottom: 18px;
+    width: 156px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    z-index: 9999;
+    cursor: pointer;
+    animation: swMascotFloat 4s ease-in-out infinite;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+}
+
+.sw-mascot-launcher:hover {
+    animation-play-state: paused;
+    transform: scale(1.06) translateY(-4px);
+}
+
+/* ---- Glassmorphism Speech Bubble ---- */
+.sw-mascot-bubble {
+    background: linear-gradient(135deg, #0A4D92 0%, #1565c0 100%);
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 7px 14px;
+    border-radius: 22px 22px 22px 6px;
+    border: 1.5px solid rgba(255, 193, 7, 0.7);
+    box-shadow: 0 6px 20px rgba(10, 77, 146, 0.45), 0 1px 3px rgba(0,0,0,0.15);
+    white-space: nowrap;
+    letter-spacing: 0.2px;
+    animation: swBubbleEntrance 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both, swBubblePop 3.5s 0.5s ease-in-out infinite;
+    position: relative;
+}
+
+.sw-mascot-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 18px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 0px solid transparent;
+    border-top: 8px solid #0A4D92;
+}
+
+/* ---- Avatar Wrapper (Canvas + Glow Ring) ---- */
+.sw-mascot-avatar-wrap {
+    position: relative;
+    width: 148px;
+    height: 168px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+/* Glowing animated ring behind mascot */
+.sw-mascot-avatar-wrap::before {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(10, 77, 146, 0.18) 0%, transparent 70%);
+    animation: swMascotGlowPulse 2.5s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Pulsing outer ring */
+.sw-mascot-avatar-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 2.5px solid rgba(10, 77, 146, 0.45);
+    animation: swRingPulse 2.2s ease-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ---- Canvas (the actual 3D rendering target) ---- */
+#sw-corner-3d-canvas {
+    display: none; /* Canvas digantikan PNG, disembunyikan */
+}
+
+/* ---- Static PNG Mascot (pengganti 3D canvas) ---- */
+.sw-mascot-fallback {
+    width: 148px;
+    height: 168px;
+    object-fit: contain;
+    object-position: center bottom;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    /* Drop shadow biru untuk efek premium */
+    filter: drop-shadow(0 10px 28px rgba(10, 77, 146, 0.55))
+            drop-shadow(0 2px 8px rgba(10, 77, 146, 0.35));
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                filter 0.3s ease;
+    /* Animasi float dari CSS — tidak butuh WebGL */
+    animation: swMascotFloat 3.5s ease-in-out infinite;
+    -webkit-animation: swMascotFloat 3.5s ease-in-out infinite;
+    /* Pastikan gambar tidak tampil sebagai kotak hitam */
+    background: transparent;
+    border: none;
+    display: block;
+}
+
+/* Hover effect: mascot sedikit membesar dan glow lebih terang */
+.sw-mascot-fallback:hover {
+    filter: drop-shadow(0 12px 32px rgba(10, 77, 146, 0.7))
+            drop-shadow(0 4px 12px rgba(255, 193, 7, 0.3));
+    /* Pause animasi float saat hover */
+    animation-play-state: paused;
+}
+
+/* ---- Expression Pill ---- */
+.sw-mascot-expr {
+    position: absolute;
+    bottom: 2px;
+    right: 0px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 3px 9px 3px 5px;
+    border-radius: 20px;
+    border: 1.5px solid rgba(255, 193, 7, 0.8);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.18);
+    pointer-events: none;
+    z-index: 5;
+    transition: all 0.3s ease;
+}
+
+.sw-mascot-expr img {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(10, 77, 146, 0.2);
+}
+
+.sw-mascot-expr span {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 800;
+    color: #0A4D92;
+    letter-spacing: 0.3px;
+}
+
+/* Avatar di toast greeting */
+.sw-toast-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 2px solid rgba(10, 77, 146, 0.3);
+    background: linear-gradient(135deg, #0A4D92, #1e3a8a);
+}
+
+.sw-toast-avatar img.sw-mascot-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center top;
+    border: none;
+}
+
+/* Avatar di header panel chat */
+.siberma-avatar img.sw-mascot-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center top;
+    border: none;
+}
+
+/* ==========================================================
+   RESPONSIVE — Mobile First
+   ========================================================== */
+
+/* Tablet & Mobile (lebar < 640px) */
+@media (max-width: 640px) {
+    /* Widget container naik ke posisi yg lebih rendah di HP */
+    #siberma-widget {
+        right: 12px;
+        bottom: 185px;
+    }
+
+    /* Panel chat: full-width hampir layar, tinggi menyesuaikan */
+    .siberma-panel {
+        width: calc(100vw - 24px) !important;
+        height: 72vh !important;
+        max-height: calc(100vh - 200px) !important;
+        border-radius: 20px 20px 4px 20px;
+    }
+
+    /* Mascot launcher: geser kiri sedikit */
+    .sw-mascot-launcher {
+        right: 16px;
+        bottom: 14px;
+        width: 120px;
+    }
+
+    /* Mascot di HP sedikit lebih kecil */
+    .sw-mascot-fallback {
+        width: 115px;
+        height: 130px;
+    }
+
+    .sw-mascot-avatar-wrap {
+        width: 120px;
+        height: 140px;
+    }
+
+    .sw-mascot-bubble {
+        font-size: 0.68rem;
+        padding: 5px 10px;
+    }
+}
+
+/* HP kecil (< 380px) */
+@media (max-width: 380px) {
+    .siberma-panel {
+        width: calc(100vw - 16px) !important;
+        height: 75vh !important;
+        max-height: calc(100vh - 180px) !important;
+    }
+
+    #siberma-widget {
+        right: 8px;
+    }
+
+    .sw-mascot-launcher {
+        right: 10px;
+    }
+}

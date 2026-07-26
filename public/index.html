@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siberma - Panel Admin & Dashboard Analitik PBM UNMA</title>
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- App Header -->
+        <header>
+            <div class="logo-section">
+                <!-- Mockup Logo Icon mimicking UNMA's shield structure -->
+                <img src="images/siberma_official_mascot.png" alt="Maskot Siberma UNMA" style="width: 44px; height: 44px; object-fit: contain;">
+                <div>
+                    <h1>SIBERMA</h1>
+                    <span style="font-size: 0.65rem; letter-spacing: 0.5px; font-weight: bold;">Asisten Siber PBM UNMA</span>
+                </div>
+                <span>Panel Panitia</span>
+            </div>
+            <div class="header-actions">
+                <a href="widget-test.html" class="btn-secondary" id="open-widget-test" target="_blank">
+                    <i class="fa-solid fa-external-link"></i> Simulasi Situs PMB
+                </a>
+                <button class="btn-primary" onclick="resetDemoData()">
+                    <i class="fa-solid fa-rotate"></i> Reset Data Demo
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Left Sidebar (Stats and Analytics) -->
+            <div class="dashboard-sidebar">
+                <!-- Gauge Card -->
+                <div class="glass-panel">
+                    <div class="panel-title">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Efisiensi Kerja Panitia</span>
+                    </div>
+                    <div class="relief-gauge-container">
+                        <svg class="gauge-svg" viewBox="0 0 200 100">
+                            <defs>
+                                <linearGradient id="gauge-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#0A4D92" />
+                                    <stop offset="100%" stop-color="#FFC107" />
+                                </linearGradient>
+                            </defs>
+                            <path class="gauge-bg" d="M20,90 A80,80 0 0,1 180,90" />
+                            <path id="relief-gauge-fill" class="gauge-fill" d="M20,90 A80,80 0 0,1 180,90" />
+                        </svg>
+                        <div id="relief-percent" class="gauge-text-val">0%</div>
+                        <div class="gauge-text-lbl">Beban Kerja Panitia yang Teratasi Otomatis</div>
+                    </div>
+                </div>
+
+                <!-- Stats Summary Card -->
+                <div class="glass-panel">
+                    <div class="panel-title">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        <span>Metrik Performa</span>
+                    </div>
+                    <div class="stat-group">
+                        <div class="stat-card">
+                            <div class="stat-icon blue">
+                                <i class="fa-solid fa-comments"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span id="stat-total-chats" class="stat-value">0</span>
+                                <span class="stat-label">Total Sesi Obrolan</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon gold">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span id="stat-total-solved" class="stat-value">0</span>
+                                <span class="stat-label">Pertanyaan Terjawab</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green">
+                                <i class="fa-solid fa-hourglass-half"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span id="stat-hours-saved" class="stat-value">0j</span>
+                                <span class="stat-label">Estimasi Waktu Dihemat</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Most Asked Topics Bar Chart -->
+                <div class="glass-panel">
+                    <div class="panel-title">
+                        <i class="fa-solid fa-fire-flame-curved"></i>
+                        <span>Topik Paling Sering Ditanyakan</span>
+                    </div>
+                    <div class="chart-list" id="popular-topics-chart">
+                        <!-- Chart items will be generated here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Workspace (Management & Testing Tabs) -->
+            <div class="dashboard-workspace">
+                <!-- Navigation Tabs -->
+                <div class="tabs-navigation">
+                    <button class="tab-btn active" onclick="switchTab('faq-manager')">
+                        <i class="fa-solid fa-database"></i> Manajer Respons FAQ
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('chat-tester')">
+                        <i class="fa-solid fa-vial"></i> Uji Respons Bot
+                    </button>
+                </div>
+
+                <!-- Tab: FAQ Manager -->
+                <div id="faq-manager" class="tab-content active">
+                    <div class="glass-panel">
+                        <div class="faq-manager-header">
+                            <div>
+                                <h2 style="font-size: 1.25rem; font-weight: 700;">Basis Pengetahuan Siberma</h2>
+                                <p style="font-size: 0.85rem; color: var(--text-secondary);">Kelola kata kunci dan jawaban yang digunakan bot untuk membalas chat secara otomatis.</p>
+                            </div>
+                            <div class="search-box">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="faq-search" placeholder="Cari pertanyaan/kata kunci..." onkeyup="filterFAQs()">
+                            </div>
+                        </div>
+
+                        <!-- FAQ Form (Add/Edit) -->
+                        <div class="faq-form" id="faq-form-container">
+                            <h3 id="form-action-title" style="font-size: 0.95rem; font-weight: bold; color: var(--accent-gold); display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fa-solid fa-plus-circle"></i> Tambah Respons FAQ Baru
+                            </h3>
+                            <input type="hidden" id="edit-faq-index" value="">
+                            
+                            <div class="faq-form-row">
+                                <div class="form-group">
+                                    <label for="faq-question">Pertanyaan / Topik</label>
+                                    <input type="text" id="faq-question" placeholder="Contoh: Berapa biaya kuliah untuk pendaftaran?">
+                                </div>
+                                <div class="form-group">
+                                    <label for="faq-keywords">Kata Kunci Pemicu (pisahkan dengan koma)</label>
+                                    <input type="text" id="faq-keywords" placeholder="Contoh: biaya, uang kuliah, bayar, mahal, cicilan">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="faq-answer">Jawaban Otomatis Bot</label>
+                                <textarea id="faq-answer" rows="3" placeholder="Tulis jawaban lengkap yang akan dikirimkan oleh bot..."></textarea>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button class="btn-secondary" id="btn-cancel-edit" onclick="clearFAQForm()" style="display: none;">Batal</button>
+                                <button class="btn-primary" onclick="saveFAQ()">
+                                    <i class="fa-solid fa-save"></i> Simpan Respons
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- FAQ List -->
+                        <div class="faq-list" id="faq-list-container">
+                            <!-- Card list will be injected here by app.js -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Chat Tester -->
+                <div id="chat-tester" class="tab-content">
+                    <div class="glass-panel chat-tester-panel">
+                        <div style="margin-bottom: 1rem;">
+                            <h2 style="font-size: 1.25rem; font-weight: 700;">Simulasi & Pengujian Internal</h2>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary);">Gunakan panel ini untuk menguji bagaimana kecerdasan bot mencocokkan kata kunci sebelum mempublikasikannya ke widget situs resmi.</p>
+                        </div>
+                        
+                        <div class="chat-tester-body">
+                            <!-- Message Log -->
+                            <div class="chat-tester-messages" id="tester-chat-messages">
+                                <div class="msg-row received">
+                                    <div class="msg-bubble">
+                                        Halo Admin Panitia! Saya **Siberma**, asisten siber PBM UNMA. Silakan ketik pertanyaan apa pun untuk menguji respons otomatis saya.
+                                        <span class="msg-time">Baru saja</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Input Area -->
+                            <div class="chat-tester-input-area">
+                                <input type="text" id="tester-chat-input" placeholder="Ketik pesan pengujian di sini..." onkeypress="handleTesterKeyPress(event)">
+                                <button class="btn-primary" onclick="sendTesterMessage()">
+                                    <i class="fa-solid fa-paper-plane"></i> Kirim
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2026 Proyek Tugas Akhir - Chatbot Siberma untuk <strong><a href="https://pmb.unma.ac.id/" target="_blank">PMB Universitas Majalengka</a></strong>. Dibuat dengan dedikasi penuh.</p>
+        </footer>
+    </div>
+
+    <!-- Application Script -->
+    <script src="js/app.js"></script>
+</body>
+</html>

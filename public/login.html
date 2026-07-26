@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — Panel Panitia Siberma PMB UNMA</title>
+    <meta name="description" content="Halaman masuk untuk Panel Admin Siberma, sistem chatbot PMB Universitas Majalengka.">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0b0f19;
+            --accent-blue: #0A4D92;
+            --accent-gold: #FFC107;
+            --accent-purple: #8b5cf6;
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --glass-bg: rgba(17, 24, 39, 0.7);
+            --font-main: 'Outfit', sans-serif;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-primary);
+            background-image:
+                radial-gradient(at 15% 25%, rgba(10, 77, 146, 0.2) 0px, transparent 55%),
+                radial-gradient(at 85% 75%, rgba(139, 92, 246, 0.2) 0px, transparent 55%),
+                radial-gradient(at 50% 50%, rgba(255, 193, 7, 0.04) 0px, transparent 60%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            overflow: hidden;
+        }
+
+        /* Decorative orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.12;
+            pointer-events: none;
+            animation: float 8s ease-in-out infinite alternate;
+        }
+        .orb-1 { width: 400px; height: 400px; background: var(--accent-blue); top: -100px; left: -100px; }
+        .orb-2 { width: 350px; height: 350px; background: var(--accent-purple); bottom: -80px; right: -80px; animation-delay: -4s; }
+        .orb-3 { width: 200px; height: 200px; background: var(--accent-gold); top: 50%; left: 60%; animation-delay: -2s; }
+
+        @keyframes float {
+            from { transform: translate(0, 0) scale(1); }
+            to   { transform: translate(20px, -20px) scale(1.05); }
+        }
+
+        /* Login card */
+        .login-wrapper {
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 10;
+            animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.03);
+        }
+
+        /* Header brand */
+        .login-brand {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .brand-logo {
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(10,77,146,0.3), rgba(139,92,246,0.3));
+            border: 1px solid rgba(10,77,146,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 8px 24px rgba(10,77,146,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-logo img {
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+        }
+
+        .brand-logo::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+            pointer-events: none;
+        }
+
+        .brand-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.72rem;
+            background: rgba(10, 77, 146, 0.2);
+            border: 1px solid rgba(10, 77, 146, 0.4);
+            color: #93c5fd;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Divider */
+        .login-divider {
+            height: 1px;
+            background: var(--border-color);
+            margin-bottom: 1.75rem;
+        }
+
+        /* Form */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0.85rem 1rem 0.85rem 2.75rem;
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .input-wrapper input:focus {
+            border-color: var(--accent-blue);
+            background: rgba(10, 77, 146, 0.06);
+            box-shadow: 0 0 0 3px rgba(10, 77, 146, 0.15);
+        }
+
+        .input-wrapper input:focus + .input-icon,
+        .input-wrapper:has(input:focus) .input-icon {
+            color: #60a5fa;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .toggle-password:hover { color: var(--text-primary); }
+
+        /* Error alert */
+        .login-error {
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.25rem;
+            font-size: 0.875rem;
+            color: #fca5a5;
+            animation: shakeX 0.4s ease;
+        }
+
+        .login-error.visible { display: flex; }
+
+        @keyframes shakeX {
+            0%, 100% { transform: translateX(0); }
+            20%       { transform: translateX(-8px); }
+            40%       { transform: translateX(8px); }
+            60%       { transform: translateX(-5px); }
+            80%       { transform: translateX(5px); }
+        }
+
+        /* Submit button */
+        .btn-login {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border: none;
+            color: white;
+            padding: 0.9rem 1.5rem;
+            border-radius: 12px;
+            font-family: var(--font-main);
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 20px rgba(10, 77, 146, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            position: relative;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+            pointer-events: none;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(10, 77, 146, 0.55);
+        }
+
+        .btn-login:active { transform: translateY(0); }
+
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-login .spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        .btn-login.loading .spinner { display: inline-block; }
+        .btn-login.loading .btn-text { opacity: 0.6; }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Footer note */
+        .login-footer-note {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .login-footer-note i { color: rgba(255,193,7,0.7); }
+    </style>
+</head>
+<body>
+
+    <!-- Decorative background orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="login-wrapper">
+        <div class="login-card">
+
+            <!-- Brand Header -->
+            <div class="login-brand">
+                <div class="brand-logo">
+                    <img src="images/siberma_official_mascot.png" alt="Maskot Siberma" onerror="this.style.display='none'; this.parentElement.innerHTML='🤖';">
+                </div>
+                <div>
+                    <div class="brand-title">SIBERMA</div>
+                    <div class="brand-subtitle">Sistem Chatbot PMB Universitas Majalengka</div>
+                </div>
+                <span class="brand-badge">
+                    <i class="fa-solid fa-shield-halved"></i> Area Terbatas — Panitia PMB
+                </span>
+            </div>
+
+            <div class="login-divider"></div>
+
+            <!-- Error Alert -->
+            <div class="login-error" id="login-error">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span id="login-error-msg">Username atau password salah. Silakan coba lagi.</span>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" onsubmit="handleLogin(event)">
+
+                <div class="form-group">
+                    <label for="username">
+                        <i class="fa-solid fa-user"></i> Username
+                    </label>
+                    <div class="input-wrapper">
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Masukkan username admin"
+                            autocomplete="username"
+                            required
+                        >
+                        <i class="fa-solid fa-user input-icon"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fa-solid fa-lock"></i> Password
+                    </label>
+                    <div class="input-wrapper">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Masukkan password"
+                            autocomplete="current-password"
+                            required
+                        >
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <button type="button" class="toggle-password" onclick="togglePassword()" title="Tampilkan/Sembunyikan password">
+                            <i class="fa-solid fa-eye" id="toggle-pw-icon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login" id="btn-login">
+                    <div class="spinner"></div>
+                    <span class="btn-text">
+                        <i class="fa-solid fa-right-to-bracket"></i> Masuk ke Panel Admin
+                    </span>
+                </button>
+
+            </form>
+
+            <div class="login-footer-note">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Halaman ini hanya untuk <strong>Panitia PMB UNMA</strong>.<br>
+                Jangan bagikan kredensial Anda kepada siapapun.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check jika session valid sudah ada, langsung redirect ke dashboard
+        (async function checkSession() {
+            try {
+                const res = await fetch('/api/auth/check', { credentials: 'include' });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.authenticated) {
+                        window.location.replace('/');
+                    }
+                }
+            } catch (e) { /* tidak apa-apa, tetap di halaman login */ }
+        })();
+
+        async function handleLogin(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('btn-login');
+            const errorBox = document.getElementById('login-error');
+            const errorMsg = document.getElementById('login-error-msg');
+
+            // Hide previous error & set loading state
+            errorBox.classList.remove('visible');
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    // Berhasil login — redirect ke dashboard
+                    btn.querySelector('.btn-text').innerHTML =
+                        '<i class="fa-solid fa-check"></i> Berhasil! Mengalihkan...';
+                    setTimeout(() => { window.location.replace('/'); }, 600);
+                } else {
+                    // Gagal login
+                    errorMsg.textContent = data.error || 'Username atau password salah.';
+                    errorBox.classList.remove('visible');
+                    void errorBox.offsetWidth; // force reflow untuk re-trigger animasi
+                    errorBox.classList.add('visible');
+                    btn.classList.remove('loading');
+                    btn.disabled = false;
+                    document.getElementById('password').value = '';
+                    document.getElementById('password').focus();
+                }
+            } catch (err) {
+                errorMsg.textContent = 'Tidak dapat terhubung ke server. Pastikan server berjalan.';
+                errorBox.classList.remove('visible');
+                void errorBox.offsetWidth;
+                errorBox.classList.add('visible');
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            }
+        }
+
+        function togglePassword() {
+            const input = document.getElementById('password');
+            const icon  = document.getElementById('toggle-pw-icon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fa-solid fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fa-solid fa-eye';
+            }
+        }
+    </script>
+</body>
+</html>
