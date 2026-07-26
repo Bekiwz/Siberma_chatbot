@@ -1048,18 +1048,19 @@
 
 /* Tablet & Mobile (lebar < 640px) */
 @media (max-width: 640px) {
-    /* Widget container naik ke posisi yg lebih rendah di HP */
+    /* Widget container disesuaikan di HP agar tidak terlalu tinggi */
     #siberma-widget {
         right: 12px;
-        bottom: 185px;
+        bottom: 20px;
+        z-index: 99999;
     }
 
     /* Panel chat: full-width hampir layar, tinggi menyesuaikan */
     .siberma-panel {
         width: calc(100vw - 24px) !important;
-        height: 72vh !important;
-        max-height: calc(100vh - 200px) !important;
-        border-radius: 20px 20px 4px 20px;
+        height: 85vh !important;
+        max-height: calc(100vh - 80px) !important;
+        border-radius: 20px !important;
     }
 
     /* Mascot launcher: geser kiri sedikit */
@@ -1090,12 +1091,13 @@
 @media (max-width: 380px) {
     .siberma-panel {
         width: calc(100vw - 16px) !important;
-        height: 75vh !important;
-        max-height: calc(100vh - 180px) !important;
+        height: 80vh !important;
+        max-height: calc(100vh - 60px) !important;
     }
 
     #siberma-widget {
         right: 8px;
+        bottom: 16px;
     }
 
     .sw-mascot-launcher {
